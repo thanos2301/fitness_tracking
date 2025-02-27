@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Add your models here
+model User {
+  id             Int                        @id @default(autoincrement())
+  email          String                     @unique
+  password       String
+  createdAt      DateTime                   @default(now())
+  updatedAt      DateTime                   @updatedAt
+  profile        Profile? // One-to-one relation with Profile
+  rehabilitation Rehabilitation? // One-to-one relation with Rehabilitation
+  meals          Meal[]
+  assessments    RehabilitationAssessment[]
+}
+
+model Profile {
+  id        Int       @id @default(autoincrement())
+  name      String?
+  gender    String?
+  dob       DateTime?
+  country   String?
+  height    Float? // in cm
+  weight    Float? // in kg
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  userId    Int       @unique // Foreign key to User
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Rehabilitation {
+  id             Int      @id @default(autoincrement())
+  description    String   @db.Text // For longer text content
+  audioRecording Bytes? // Store audio data as bytes
+  audioMimeType  String? // Store the audio file type (e.g., 'audio/webm')
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  userId         Int      @unique // Foreign key to User
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Meal {
+  id        Int      @id @default(autoincrement())
+  foodName  String
+  quantity  Float
+  calories  Float
+  protein   Float
+  carbs     Float
+  fats      Float
+  fiber     Float
+  date      DateTime
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([date])
+}
+
+model RehabilitationAssessment {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  user           User     @relation(fields: [userId], references: [id])
+  injuryType     String
+  assessmentData Json
+  date           DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([userId])
+}
