@@ -50,7 +50,94 @@ const foodDatabase = {
   'avocado': { calories: 160, protein: 2, carbs: 8.5, fats: 14.7, fiber: 6.7 },
   'milk': { calories: 42, protein: 3.4, carbs: 5, fats: 1, fiber: 0 },
   'bread': { calories: 265, protein: 9, carbs: 49, fats: 3.2, fiber: 2.7 },
-  'peanut butter': { calories: 588, protein: 25, carbs: 20, fats: 50, fiber: 6 }
+  'peanut butter': { calories: 588, protein: 25, carbs: 20, fats: 50, fiber: 6 },
+  // Additional foods
+  'oranges': { calories: 47, protein: 0.9, carbs: 12, fats: 0.1, fiber: 2.4 },
+  'strawberries': { calories: 32, protein: 0.7, carbs: 7.7, fats: 0.3, fiber: 2 },
+  'blueberries': { calories: 57, protein: 0.7, carbs: 14, fats: 0.3, fiber: 2.4 },
+  'carrots': { calories: 41, protein: 0.9, carbs: 10, fats: 0.2, fiber: 2.8 },
+  'potatoes': { calories: 77, protein: 2, carbs: 17, fats: 0.1, fiber: 2.2 },
+  'chickpeas': { calories: 164, protein: 8.9, carbs: 27, fats: 2.6, fiber: 7.6 },
+  'walnuts': { calories: 654, protein: 15, carbs: 14, fats: 65, fiber: 6.7 },
+  'cashews': { calories: 553, protein: 18, carbs: 30, fats: 44, fiber: 3.3 },
+  'pasta': { calories: 131, protein: 5, carbs: 25, fats: 1.1, fiber: 1.3 },
+  'cheese': { calories: 402, protein: 25, carbs: 1.3, fats: 33, fiber: 0 },
+  'turkey': { calories: 135, protein: 30, carbs: 0, fats: 1, fiber: 0 },
+  'pork': { calories: 242, protein: 27, carbs: 0, fats: 14, fiber: 0 },
+  'shrimp': { calories: 99, protein: 24, carbs: 0.2, fats: 0.3, fiber: 0 },
+  'mushrooms': { calories: 22, protein: 3.1, carbs: 3.3, fats: 0.3, fiber: 1 },
+  'cucumber': { calories: 16, protein: 0.7, carbs: 3.6, fats: 0.1, fiber: 0.5 },
+  'zucchini': { calories: 17, protein: 1.2, carbs: 3.1, fats: 0.3, fiber: 1 },
+  'bell peppers': { calories: 31, protein: 1, carbs: 6, fats: 0.3, fiber: 2.1 },
+  'kale': { calories: 49, protein: 4.3, carbs: 9, fats: 0.9, fiber: 3.6 },
+  'cabbage': { calories: 25, protein: 1.3, carbs: 6, fats: 0.1, fiber: 2.5 },
+  'cauliflower': { calories: 25, protein: 1.9, carbs: 5, fats: 0.3, fiber: 2 },
+  'asparagus': { calories: 20, protein: 2.2, carbs: 3.7, fats: 0.2, fiber: 2.1 },
+  'eggplant': { calories: 25, protein: 1, carbs: 6, fats: 0.2, fiber: 3 },
+  'pears': { calories: 57, protein: 0.4, carbs: 15, fats: 0.1, fiber: 3.1 },
+  'grapes': { calories: 69, protein: 0.7, carbs: 18, fats: 0.2, fiber: 0.9 },
+  'pineapple': { calories: 50, protein: 0.5, carbs: 13, fats: 0.1, fiber: 1.4 },
+  'watermelon': { calories: 30, protein: 0.6, carbs: 8, fats: 0.2, fiber: 0.4 },
+  'kiwi': { calories: 61, protein: 1.1, carbs: 15, fats: 0.5, fiber: 3 },
+  'mango': { calories: 60, protein: 0.8, carbs: 15, fats: 0.4, fiber: 1.6 },
+  'papaya': { calories: 43, protein: 0.5, carbs: 11, fats: 0.3, fiber: 1.7 },
+  'peach': { calories: 39, protein: 0.9, carbs: 10, fats: 0.3, fiber: 1.5 },
+  'plum': { calories: 46, protein: 0.7, carbs: 11, fats: 0.3, fiber: 1.4 },
+  'raspberries': { calories: 52, protein: 1.5, carbs: 12, fats: 0.7, fiber: 6.5 },
+  'blackberries': { calories: 43, protein: 1.4, carbs: 10, fats: 0.5, fiber: 5.3 },
+  'cherries': { calories: 50, protein: 1, carbs: 12, fats: 0.3, fiber: 1.6 },
+  'pomegranate': { calories: 83, protein: 1.7, carbs: 19, fats: 1.2, fiber: 4 },
+  'dates': { calories: 282, protein: 2.5, carbs: 75, fats: 0.4, fiber: 8 },
+  'figs': { calories: 74, protein: 0.8, carbs: 19, fats: 0.3, fiber: 3 },
+  'raisins': { calories: 299, protein: 3.1, carbs: 79, fats: 0.5, fiber: 3.7 },
+  'prunes': { calories: 240, protein: 2.2, carbs: 64, fats: 0.4, fiber: 7.1 },
+  'apricots': { calories: 48, protein: 1.4, carbs: 12, fats: 0.4, fiber: 2 },
+  'nectarines': { calories: 44, protein: 1.1, carbs: 11, fats: 0.3, fiber: 1.7 },
+  'coconut': { calories: 354, protein: 3.3, carbs: 15, fats: 33, fiber: 9 },
+  'olive oil': { calories: 884, protein: 0, carbs: 0, fats: 100, fiber: 0 },
+  'butter': { calories: 717, protein: 0.9, carbs: 0.1, fats: 81, fiber: 0 },
+  'honey': { calories: 304, protein: 0.3, carbs: 82, fats: 0, fiber: 0.2 },
+  'sugar': { calories: 387, protein: 0, carbs: 100, fats: 0, fiber: 0 },
+  'brown sugar': { calories: 380, protein: 0, carbs: 98, fats: 0, fiber: 0 },
+  'maple syrup': { calories: 260, protein: 0, carbs: 67, fats: 0, fiber: 0 },
+  'jam': { calories: 250, protein: 0.3, carbs: 66, fats: 0.1, fiber: 0.4 },
+  'chocolate': { calories: 546, protein: 4.9, carbs: 61, fats: 31, fiber: 7 },
+  'dark chocolate': { calories: 598, protein: 7.8, carbs: 45, fats: 42, fiber: 10.9 },
+  'white chocolate': { calories: 539, protein: 5.9, carbs: 59, fats: 32, fiber: 0.2 },
+  'milk chocolate': { calories: 535, protein: 7.7, carbs: 59, fats: 30, fiber: 3.4 },
+  'ice cream': { calories: 207, protein: 3.5, carbs: 24, fats: 11, fiber: 0.7 },
+  'yogurt': { calories: 59, protein: 10, carbs: 3.6, fats: 0.4, fiber: 0 },
+  'cream cheese': { calories: 342, protein: 6.2, carbs: 4.1, fats: 34, fiber: 0 },
+  'sour cream': { calories: 193, protein: 2.1, carbs: 4.6, fats: 20, fiber: 0 },
+  'mayonnaise': { calories: 680, protein: 1, carbs: 0.6, fats: 75, fiber: 0 },
+  'ketchup': { calories: 112, protein: 1.3, carbs: 26, fats: 0.2, fiber: 0.3 },
+  'mustard': { calories: 66, protein: 4.4, carbs: 5, fats: 3.6, fiber: 3.3 },
+  'soy sauce': { calories: 53, protein: 8, carbs: 5, fats: 0.6, fiber: 0.8 },
+  'vinegar': { calories: 18, protein: 0, carbs: 0.9, fats: 0, fiber: 0 },
+  'hot sauce': { calories: 0, protein: 0, carbs: 0, fats: 0, fiber: 0 },
+  'salsa': { calories: 36, protein: 1.5, carbs: 7, fats: 0.2, fiber: 2.5 },
+  'hummus': { calories: 166, protein: 8, carbs: 14, fats: 9.6, fiber: 6 },
+  'guacamole': { calories: 160, protein: 2, carbs: 9, fats: 15, fiber: 7 },
+  'pesto': { calories: 304, protein: 3.8, carbs: 4, fats: 31, fiber: 1.1 },
+  'tahini': { calories: 595, protein: 17, carbs: 21, fats: 53, fiber: 9.3 },
+  'almond butter': { calories: 614, protein: 21, carbs: 19, fats: 56, fiber: 10 },
+  'cashew butter': { calories: 553, protein: 18, carbs: 30, fats: 44, fiber: 3.3 },
+  'sunflower seeds': { calories: 584, protein: 20, carbs: 20, fats: 51, fiber: 8.6 },
+  'pumpkin seeds': { calories: 559, protein: 30, carbs: 11, fats: 49, fiber: 6 },
+  'flaxseeds': { calories: 534, protein: 18, carbs: 29, fats: 42, fiber: 27 },
+  'chia seeds': { calories: 486, protein: 16, carbs: 42, fats: 31, fiber: 34 },
+  'hemp seeds': { calories: 553, protein: 31, carbs: 9, fats: 48, fiber: 4 }
+};
+
+const calculateDailyGoals = (weight) => {
+  // Weight should be in kg
+  return {
+    calories: Math.round(weight * 33), // ~33 kcal per kg for moderate activity
+    protein: Math.round(weight * 2), // 2g per kg bodyweight
+    carbs: Math.round(weight * 4.5), // ~4.5g per kg bodyweight
+    fats: Math.round(weight * 1), // ~1g per kg bodyweight
+    fiber: 30, // General recommendation ~30g
+  };
 };
 
 export default function DietTracking() {
@@ -71,6 +158,9 @@ export default function DietTracking() {
   const [chartType, setChartType] = useState('line'); // 'line', 'bar', 'pie'
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [userWeight, setUserWeight] = useState(70); // Default weight 70kg
+  const [dailyGoals, setDailyGoals] = useState(calculateDailyGoals(70));
+  const [notifications, setNotifications] = useState([]);
 
   // Search food in database
   const handleFoodSearch = (searchTerm) => {
@@ -123,14 +213,16 @@ export default function DietTracking() {
         body: JSON.stringify(mealWithNutrition)
       });
 
-      if (!response.ok) throw new Error('Failed to save meal');
+      if (!response.ok) {
+        throw new Error('Failed to add meal');
+      }
 
-      const savedMeal = await response.json();
-      setMeals(prev => [...prev, savedMeal]);
-      setNewMeal({ foodName: '', quantity: '' });
-      setSearchResults([]);
-    } catch (error) {
-      console.error('Error saving meal:', error);
+      setMeals(prevMeals => [...prevMeals, mealWithNutrition]);
+      setSuccessMessage('Meal added successfully');
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (err) {
+      setError(err.message);
+      setTimeout(() => setError(''), 3000);
     }
   };
 
@@ -200,16 +292,42 @@ export default function DietTracking() {
 
   // Calculate daily totals
   useEffect(() => {
-    const totals = meals.reduce((acc, meal) => ({
-      calories: acc.calories + meal.calories,
-      protein: acc.protein + meal.protein,
-      carbs: acc.carbs + meal.carbs,
-      fats: acc.fats + meal.fats,
-      fiber: acc.fiber + meal.fiber
-    }), { calories: 0, protein: 0, carbs: 0, fats: 0, fiber: 0 });
+    const totals = meals.reduce((acc, meal) => {
+      acc.calories += meal.calories;
+      acc.protein += meal.protein;
+      acc.carbs += meal.carbs;
+      acc.fats += meal.fats;
+      acc.fiber += meal.fiber;
+      return acc;
+    }, { calories: 0, protein: 0, carbs: 0, fats: 0, fiber: 0 });
     
     setDailyTotals(totals);
-  }, [meals]);
+
+    // Check if any goals are met
+    const newNotifications = [];
+    if (totals.protein >= dailyGoals.protein) {
+      newNotifications.push('You have reached your daily protein goal!');
+    }
+    if (totals.carbs >= dailyGoals.carbs) {
+      newNotifications.push('You have reached your daily carbs goal!');
+    }
+    if (totals.fats >= dailyGoals.fats) {
+      newNotifications.push('You have reached your daily fats goal!');
+    }
+    if (totals.fiber >= dailyGoals.fiber) {
+      newNotifications.push('You have reached your daily fiber goal!');
+    }
+
+    setNotifications(newNotifications);
+
+    // Set a timeout to clear notifications after 10 seconds
+    const timeoutId = setTimeout(() => {
+      setNotifications([]);
+    }, 10000);
+
+    // Clear the timeout if the component unmounts
+    return () => clearTimeout(timeoutId);
+  }, [meals, dailyGoals]);
 
   // Fetch weekly data
   useEffect(() => {
@@ -230,6 +348,29 @@ export default function DietTracking() {
 
     fetchWeeklyData();
   }, [meals]);
+
+  // Fetch user's weight from profile when component mounts
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_BASE_URL}/auth/profile`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await response.json();
+        if (data.weight) {
+          setUserWeight(data.weight);
+          setDailyGoals(calculateDailyGoals(data.weight));
+        }
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   // Chart data preparation
   const getChartData = () => {
@@ -502,29 +643,130 @@ export default function DietTracking() {
 
               {/* Daily Summary */}
               <div className="mt-8 grid grid-cols-2 md:grid-cols-5 gap-4">
-                <div className="bg-gradient-to-br from-pink-500 to-rose-500 rounded-xl p-4 text-white">
-                  <h4 className="text-lg font-semibold">Calories</h4>
-                  <p className="text-2xl">{dailyTotals.calories.toFixed(0)}</p>
+                <div className="bg-gradient-to-br from-rose-500 to-rose-600 rounded-xl p-4 text-white shadow-lg">
+                  <h4 className="text-lg font-bold text-white/90">Calories</h4>
+                  <p className="text-2xl font-bold">{dailyTotals.calories.toFixed(0)}</p>
                 </div>
-                <div className="bg-gradient-to-br from-green-500 to-teal-500 rounded-xl p-4 text-white">
-                  <h4 className="text-lg font-semibold">Protein</h4>
-                  <p className="text-2xl">{dailyTotals.protein.toFixed(0)}g</p>
+                <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 text-white shadow-lg">
+                  <h4 className="text-lg font-bold text-white/90">Protein</h4>
+                  <p className="text-2xl font-bold">{dailyTotals.protein.toFixed(0)}g</p>
                 </div>
-                <div className="bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl p-4 text-white">
-                  <h4 className="text-lg font-semibold">Carbs</h4>
-                  <p className="text-2xl">{dailyTotals.carbs.toFixed(0)}g</p>
+                <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl p-4 text-white shadow-lg">
+                  <h4 className="text-lg font-bold text-white/90">Carbs</h4>
+                  <p className="text-2xl font-bold">{dailyTotals.carbs.toFixed(0)}g</p>
                 </div>
-                <div className="bg-gradient-to-br from-yellow-500 to-orange-500 rounded-xl p-4 text-white">
-                  <h4 className="text-lg font-semibold">Fats</h4>
-                  <p className="text-2xl">{dailyTotals.fats.toFixed(0)}g</p>
+                <div className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl p-4 text-white shadow-lg">
+                  <h4 className="text-lg font-bold text-white/90">Fats</h4>
+                  <p className="text-2xl font-bold">{dailyTotals.fats.toFixed(0)}g</p>
                 </div>
-                <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl p-4 text-white">
-                  <h4 className="text-lg font-semibold">Fiber</h4>
-                  <p className="text-2xl">{dailyTotals.fiber.toFixed(0)}g</p>
+                <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-4 text-white shadow-lg">
+                  <h4 className="text-lg font-bold text-white/90">Fiber</h4>
+                  <p className="text-2xl font-bold">{dailyTotals.fiber.toFixed(0)}g</p>
                 </div>
               </div>
             </div>
           )}
+
+          {/* Daily Goals and Progress Section */}
+          <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 border dark:border-gray-700">
+            <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Daily Nutrition Goals</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+              {/* Calories */}
+              <div className="bg-white dark:bg-gray-900 p-5 rounded-lg shadow-md border dark:border-gray-700">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">Calories</h3>
+                <div className="mt-2">
+                  <div className="flex justify-between text-sm mb-2">
+                    <span className="text-gray-700 dark:text-gray-300">Progress</span>
+                    <span className="text-gray-900 dark:text-white font-semibold">
+                      {Math.round(dailyTotals.calories)} / {dailyGoals.calories} kcal
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                    <div 
+                      className="bg-rose-500 h-3 rounded-full transition-all duration-300"
+                      style={{ width: `${Math.min((dailyTotals.calories / dailyGoals.calories) * 100, 100)}%` }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Protein */}
+              <div className="bg-white dark:bg-gray-900 p-5 rounded-lg shadow-md border dark:border-gray-700">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">Protein</h3>
+                <div className="mt-2">
+                  <div className="flex justify-between text-sm mb-2">
+                    <span className="text-gray-700 dark:text-gray-300">Progress</span>
+                    <span className="text-gray-900 dark:text-white font-semibold">
+                      {Math.round(dailyTotals.protein)} / {dailyGoals.protein}g
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                    <div 
+                      className="bg-blue-500 h-3 rounded-full transition-all duration-300"
+                      style={{ width: `${Math.min((dailyTotals.protein / dailyGoals.protein) * 100, 100)}%` }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Carbs */}
+              <div className="bg-white dark:bg-gray-900 p-5 rounded-lg shadow-md border dark:border-gray-700">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">Carbs</h3>
+                <div className="mt-2">
+                  <div className="flex justify-between text-sm mb-2">
+                    <span className="text-gray-700 dark:text-gray-300">Progress</span>
+                    <span className="text-gray-900 dark:text-white font-semibold">
+                      {Math.round(dailyTotals.carbs)} / {dailyGoals.carbs}g
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                    <div 
+                      className="bg-emerald-500 h-3 rounded-full transition-all duration-300"
+                      style={{ width: `${Math.min((dailyTotals.carbs / dailyGoals.carbs) * 100, 100)}%` }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Fats */}
+              <div className="bg-white dark:bg-gray-900 p-5 rounded-lg shadow-md border dark:border-gray-700">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">Fats</h3>
+                <div className="mt-2">
+                  <div className="flex justify-between text-sm mb-2">
+                    <span className="text-gray-700 dark:text-gray-300">Progress</span>
+                    <span className="text-gray-900 dark:text-white font-semibold">
+                      {Math.round(dailyTotals.fats)} / {dailyGoals.fats}g
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                    <div 
+                      className="bg-amber-500 h-3 rounded-full transition-all duration-300"
+                      style={{ width: `${Math.min((dailyTotals.fats / dailyGoals.fats) * 100, 100)}%` }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Fiber */}
+              <div className="bg-white dark:bg-gray-900 p-5 rounded-lg shadow-md border dark:border-gray-700">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">Fiber</h3>
+                <div className="mt-2">
+                  <div className="flex justify-between text-sm mb-2">
+                    <span className="text-gray-700 dark:text-gray-300">Progress</span>
+                    <span className="text-gray-900 dark:text-white font-semibold">
+                      {Math.round(dailyTotals.fiber)} / {dailyGoals.fiber}g
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                    <div 
+                      className="bg-purple-500 h-3 rounded-full transition-all duration-300"
+                      style={{ width: `${Math.min((dailyTotals.fiber / dailyGoals.fiber) * 100, 100)}%` }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       {error && (
@@ -535,6 +777,15 @@ export default function DietTracking() {
       {successMessage && (
         <div className="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
           {successMessage}
+        </div>
+      )}
+      {notifications.length > 0 && (
+        <div className="fixed top-4 right-4 z-50">
+          {notifications.map((note, index) => (
+            <div key={index} className="mb-2 p-4 bg-blue-600 text-white rounded-lg shadow-lg">
+              {note}
+            </div>
+          ))}
         </div>
       )}
     </div>

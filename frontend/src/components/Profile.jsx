@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../config/api';
 import { countries } from '../data/countries';
@@ -7,6 +7,9 @@ import { countries } from '../data/countries';
 export default function Profile() {
   const navigate = useNavigate();
   const { userEmail } = useAuth();
+  const location = useLocation();
+  const message = location.state?.message;
+  const returnPath = location.state?.returnPath;
   const [profile, setProfile] = useState({
     name: '',
     gender: '',
@@ -157,6 +160,13 @@ export default function Profile() {
               </div>
             )}
 
+            {message && (
+              <div className="mb-6 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700">
+                <p className="font-medium">{message}</p>
+                <p className="text-sm mt-1">Complete your profile to access: {returnPath}</p>
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Personal Information Section */}
               <div className="bg-white/50 dark:bg-white/10 backdrop-blur-md rounded-lg p-6 border border-gray-200 dark:border-gray-700">
@@ -172,7 +182,7 @@ export default function Profile() {
                   </div>
 
                   <div>
-                    <label htmlFor="name" className={`block text-sm font-medium text-gray-300 mb-2 ${requiredField}`}>
+                    <label htmlFor="name" className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${requiredField}`}>
                       Name
                     </label>
                     <input
@@ -182,12 +192,12 @@ export default function Profile() {
                       value={profile.name}
                       onChange={handleChange}
                       required
-                      className="h-10 w-full px-3 py-2 bg-black/30 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:ring-primary-500 focus:border-primary-500"
+                      className="h-10 w-full px-3 py-2 bg-white dark:bg-black border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white placeholder-gray-500 focus:ring-primary-500 focus:border-primary-500"
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="gender" className={`block text-sm font-medium text-gray-300 mb-2 ${requiredField}`}>
+                    <label htmlFor="gender" className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${requiredField}`}>
                       Gender
                     </label>
                     <select
@@ -196,7 +206,7 @@ export default function Profile() {
                       value={profile.gender}
                       onChange={handleChange}
                       required
-                      className="h-10 w-full px-3 py-2 bg-black/30 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:ring-primary-500 focus:border-primary-500"
+                      className="h-10 w-full px-3 py-2 bg-white dark:bg-black border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white placeholder-gray-500 focus:ring-primary-500 focus:border-primary-500"
                     >
                       <option value="">Select gender</option>
                       <option value="male">Male</option>
@@ -205,7 +215,7 @@ export default function Profile() {
                   </div>
 
                   <div>
-                    <label htmlFor="dob" className={`block text-sm font-medium text-gray-300 mb-2 ${requiredField}`}>
+                    <label htmlFor="dob" className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${requiredField}`}>
                       Date of Birth
                     </label>
                     <div className="relative">
@@ -216,7 +226,7 @@ export default function Profile() {
                         value={profile.dob}
                         onChange={handleChange}
                         required
-                        className="h-10 w-full px-3 py-2 bg-black/30 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:ring-primary-500 focus:border-primary-500"
+                        className="h-10 w-full px-3 py-2 bg-white dark:bg-black border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white placeholder-gray-500 focus:ring-primary-500 focus:border-primary-500"
                       />
                       <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                         <svg className="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
@@ -227,7 +237,7 @@ export default function Profile() {
                   </div>
 
                   <div>
-                    <label htmlFor="country" className={`block text-sm font-medium text-gray-300 mb-2 ${requiredField}`}>
+                    <label htmlFor="country" className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${requiredField}`}>
                       Country
                     </label>
                     <input
@@ -238,7 +248,7 @@ export default function Profile() {
                       onChange={handleChange}
                       required
                       placeholder="Enter your country"
-                      className="h-10 w-full px-3 py-2 bg-black/30 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:ring-primary-500 focus:border-primary-500"
+                      className="h-10 w-full px-3 py-2 bg-white dark:bg-black border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white placeholder-gray-500 focus:ring-primary-500 focus:border-primary-500"
                     />
                   </div>
                 </div>
