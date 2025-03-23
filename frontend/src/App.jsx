@@ -9,11 +9,12 @@ import SignUp from './components/SignUp';
 import Profile from './components/Profile';
 import Rehabilitation from './components/Rehabilitation';
 import ProtectedRoute from './components/ProtectedRoute';
-import FormCheck from './components/FormCheck';
 import DietTracking from './components/DietTracking';
 import Support from './components/Support';
 import RehabilitationResults from './components/RehabilitationResults';
 import RehabilitationAssessment from './components/RehabilitationAssessment';
+import Analysis from './components/Analysis';
+import ProfileCheck from './components/ProfileCheck';
 
 function App() {
   return (
@@ -31,15 +32,9 @@ function App() {
                 path="/rehabilitation" 
                 element={
                   <ProtectedRoute>
-                    <Rehabilitation />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/form-check" 
-                element={
-                  <ProtectedRoute>
-                    <FormCheck />
+                    <ProfileCheck>
+                      <Rehabilitation />
+                    </ProfileCheck>
                   </ProtectedRoute>
                 } 
               />
@@ -47,7 +42,9 @@ function App() {
                 path="/diet-track" 
                 element={
                   <ProtectedRoute>
-                    <DietTracking />
+                    <ProfileCheck>
+                      <DietTracking />
+                    </ProfileCheck>
                   </ProtectedRoute>
                 } 
               />
@@ -55,7 +52,9 @@ function App() {
                 path="/support" 
                 element={
                   <ProtectedRoute>
-                    <Support />
+                    <ProfileCheck>
+                      <Support />
+                    </ProfileCheck>
                   </ProtectedRoute>
                 } 
               />
@@ -72,6 +71,16 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <RehabilitationResults />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/analysis" 
+                element={
+                  <ProtectedRoute>
+                    <ProfileCheck>
+                      <Analysis />
+                    </ProfileCheck>
                   </ProtectedRoute>
                 } 
               />

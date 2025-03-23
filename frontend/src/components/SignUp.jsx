@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
+    firstName: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -45,6 +46,7 @@ export default function SignUp() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          name: formData.firstName,
           email: formData.email,
           password: formData.password,
         }),
@@ -77,6 +79,23 @@ export default function SignUp() {
             {error && (
               <div className="text-red-600 text-sm text-center">{error}</div>
             )}
+            <div>
+              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                Full Name
+              </label>
+              <div className="mt-1">
+                <input
+                  id="firstName"
+                  name="firstName"
+                  type="text"
+                  autoComplete="given-name"
+                  required
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                />
+              </div>
+            </div>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email address

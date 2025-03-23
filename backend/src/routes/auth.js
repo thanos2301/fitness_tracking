@@ -15,7 +15,18 @@ const upload = multer();
 // Sign Up
 router.post('/signup', async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
+
+    // Validate all required fields
+    if (!email || !password || !name) {
+      return res.status(400).json({ error: 'Email, password, and name are required' });
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Invalid email format' });
+    }
 
     // Check if user already exists
     const existingUser = await prismaClient.user.findUnique({
@@ -23,19 +34,24 @@ router.post('/signup', async (req, res) => {
     });
 
     if (existingUser) {
-      return res.status(400).json({ error: 'Email already in use' });
+      return res.status(400).json({ error: 'User already exists' });
     }
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user
+    // Create user with firstName from name
     const user = await prismaClient.user.create({
       data: {
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        firstName: name, // Use name as firstName
+        lastName: null,  // Optional lastName
       }
     });
+
+    // Remove password from response
+    const { password: _, ...userWithoutPassword } = user;
 
     // Generate JWT token
     const token = jwt.sign(
@@ -44,7 +60,7 @@ router.post('/signup', async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    res.status(201).json({ token });
+    res.status(201).json({ token, ...userWithoutPassword });
   } catch (err) {
     console.error('Signup error:', err);
     res.status(500).json({ error: 'Error creating user' });
