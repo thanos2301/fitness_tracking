@@ -15,6 +15,8 @@ import RehabilitationResults from './components/RehabilitationResults';
 import RehabilitationAssessment from './components/RehabilitationAssessment';
 import Analysis from './components/Analysis';
 import ProfileCheck from './components/ProfileCheck';
+import FormTrack from './components/FormTrack';
+import DietPlan from './components/DietPlan';
 
 function App() {
   return (
@@ -80,6 +82,26 @@ function App() {
                   <ProtectedRoute>
                     <ProfileCheck>
                       <Analysis />
+                    </ProfileCheck>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/form-track" 
+                element={
+                  <ProtectedRoute>
+                    <ProfileCheck>
+                      <FormTrack />
+                    </ProfileCheck>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/diet-plan" 
+                element={
+                  <ProtectedRoute>
+                    <ProfileCheck>
+                      <DietPlan />
                     </ProfileCheck>
                   </ProtectedRoute>
                 } 

@@ -15,6 +15,7 @@ import {
 } from 'chart.js';
 import { format, startOfWeek, eachDayOfInterval, addDays, subDays } from 'date-fns';
 import { API_BASE_URL } from '../config/api';
+import { toast } from 'react-hot-toast';
 
 ChartJS.register(
   CategoryScale,
@@ -228,45 +229,27 @@ export default function DietTracking() {
 
   const handleDeleteMeal = async (mealId) => {
     try {
+      const token = localStorage.getItem('token');
       console.log('Attempting to delete meal with ID:', mealId);
       
       const response = await fetch(`${API_BASE_URL}/diet/meals/${mealId}`, {
         method: 'DELETE',
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${token}`
         }
       });
 
-      console.log('Delete response status:', response.status);
-      
-      // First check if the response is JSON
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        throw new Error(`Server returned non-JSON response for meal ID ${mealId}`);
-      }
-
-      const data = await response.json();
-      console.log('Delete response data:', data);
-
       if (!response.ok) {
-        throw new Error(data.error || `Failed to delete meal ${mealId}`);
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to delete meal');
       }
 
-      // Update the meals list by removing the deleted meal
+      // Remove the meal from the state
       setMeals(prevMeals => prevMeals.filter(meal => meal.id !== mealId));
-      
-      // Show success message
-      setSuccessMessage('Meal deleted successfully');
-      setTimeout(() => setSuccessMessage(''), 3000);
-
-      // Fetch updated weekly summary
-      fetchWeeklySummary();
-    } catch (error) {
-      console.error('Error deleting meal:', error);
-      setError(error.message || 'Failed to delete meal. Please try again.');
-      setTimeout(() => setError(''), 3000);
+      toast.success('Meal deleted successfully');
+    } catch (err) {
+      console.error('Error deleting meal:', err);
+      toast.error(err.message);
     }
   };
 
@@ -587,7 +570,10 @@ export default function DietTracking() {
                         <div className="flex justify-between text-xs text-gray-400">
                           <span>Added at {new Date(meal.date).toLocaleTimeString()}</span>
                           <button 
-                            onClick={() => handleDeleteMeal(meal.id)}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleDeleteMeal(meal.id);
+                            }}
                             className="text-red-500 hover:text-red-700 transition-colors"
                             title="Delete meal"
                           >

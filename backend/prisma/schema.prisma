@@ -20,6 +20,7 @@ model User {
   rehabilitation Rehabilitation? // One-to-one relation with Rehabilitation
   meals          Meal[]
   assessments    RehabilitationAssessment[]
+  rehabilitationPlans RehabilitationPlan[]
 }
 
 model Profile {
@@ -77,4 +78,16 @@ model RehabilitationAssessment {
   updatedAt      DateTime @updatedAt
 
   @@index([userId])
+}
+
+model RehabilitationPlan {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  exercise  String
+  progress  Float    @default(0)
+  painLevel Int      @default(0)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("rehabilitation_plans")
 }
