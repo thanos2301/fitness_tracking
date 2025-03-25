@@ -13,6 +13,7 @@ const __dirname = path.dirname(__filename);
 
 // Test route
 router.get('/test', (req, res) => {
+  console.log('Test route hit');
   res.json({ message: 'Rehabilitation route is working' });
 });
 
@@ -88,6 +89,68 @@ router.get('/assessments', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('Error fetching assessments:', error);
     res.status(500).json({ error: 'Failed to fetch assessments' });
+  }
+});
+
+// Get rehabilitation progress
+router.get('/progress', authenticateToken, async (req, res) => {
+  try {
+    // Get user ID from token
+    const userId = req.user?.userId || req.userId;
+    console.log('Progress route hit for user:', userId);
+
+    if (!userId) {
+      console.log('No user ID found in token');
+      return res.status(401).json({ error: 'User ID not found in token' });
+    }
+
+    // Get exercises from rehabilitation plans
+    const exercises = await prisma.rehabilitationPlan.findMany({
+      where: { userId },
+      select: {
+        exercise: true,
+        progress: true,
+        painLevel: true,
+        createdAt: true
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    console.log(`Found ${exercises.length} exercises for user ${userId}`);
+
+    // Return default data if no exercises found
+    if (!exercises || exercises.length === 0) {
+      return res.json({
+        exercises: [{ name: 'No exercises yet', progressScore: 0 }],
+        painHistory: [{ date: new Date(), level: 0 }],
+        overallProgress: 0,
+        currentPainLevel: 0
+      });
+    }
+
+    const formattedData = {
+      exercises: exercises.map(ex => ({
+        name: ex.exercise,
+        progressScore: ex.progress
+      })),
+      painHistory: exercises.map(ex => ({
+        date: ex.createdAt,
+        level: ex.painLevel
+      })),
+      overallProgress: Math.round(
+        exercises.reduce((acc, curr) => acc + curr.progress, 0) / exercises.length
+      ),
+      currentPainLevel: exercises[0].painLevel
+    };
+
+    console.log('Sending formatted data');
+    res.json(formattedData);
+  } catch (error) {
+    console.error('Error in /progress route:', error);
+    res.status(500).json({
+      error: 'Failed to fetch rehabilitation progress',
+      details: error.message
+    });
   }
 });
 

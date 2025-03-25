@@ -16,7 +16,9 @@ export default function Navbar() {
 
   const navItems = [
     { name: 'Diet Tracking', path: '/diet-track' },
-    { name: 'Rehabilitation', path: '/rehabilitation', className: 'text-base' },
+    { name: 'Diet Plan', path: '/diet-plan' },
+    { name: 'Rehabilitation', path: '/rehabilitation' },
+    { name: 'Form Track', path: '/form-track' },
     { name: 'Analysis', path: '/analysis' },
     { name: 'Support', path: '/support' },
   ];

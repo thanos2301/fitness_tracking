@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Line, Bar, Doughnut, Radar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -14,7 +14,10 @@ import {
   Legend,
   Filler
 } from 'chart.js';
+import { API_BASE_URL } from '../config/api';
+import { format, subDays } from 'date-fns';
 
+// Register ChartJS components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -30,92 +33,127 @@ ChartJS.register(
 );
 
 export default function Analysis() {
-  const [timeframe, setTimeframe] = useState('weekly');
-  const [activeTab, setActiveTab] = useState('overview');
+  const [dietData, setDietData] = useState({
+    weeklyCalories: [],
+    macroSummary: { protein: 0, carbs: 0, fat: 0 },
+    averageCalories: 0
+  });
+  const [rehabData, setRehabData] = useState({
+    exercises: [],
+    painHistory: [],
+    overallProgress: 0,
+    currentPainLevel: 0
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Rehabilitation Data
-  const rehabProgressData = {
-    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-    datasets: [
-      {
-        label: 'Rehabilitation Progress',
-        data: [20, 40, 60, 80],
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1,
-        fill: false
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem('token');
+        
+        if (!token) {
+          throw new Error('Please log in to view analysis');
+        }
+
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        };
+
+        // Test the rehabilitation endpoint first
+        const testResponse = await fetch(`${API_BASE_URL}/rehabilitation/test`, { headers });
+        console.log('Test response:', await testResponse.text());
+
+        // Fetch actual data
+        const [dietResponse, rehabResponse] = await Promise.all([
+          fetch(`${API_BASE_URL}/diet/weekly-summary`, { headers }),
+          fetch(`${API_BASE_URL}/rehabilitation/progress`, { headers })
+        ]);
+
+        console.log('Diet response status:', dietResponse.status);
+        console.log('Rehab response status:', rehabResponse.status);
+
+        if (!dietResponse.ok) {
+          console.warn('Diet data fetch failed:', await dietResponse.text());
+        }
+
+        if (!rehabResponse.ok) {
+          console.warn('Rehabilitation data fetch failed:', await rehabResponse.text());
+        }
+
+        const [dietData, rehabData] = await Promise.all([
+          dietResponse.ok ? dietResponse.json() : null,
+          rehabResponse.ok ? rehabResponse.json() : null
+        ]);
+
+        if (dietData) setDietData(dietData);
+        if (rehabData) setRehabData(rehabData);
+
+        if (!dietData && !rehabData) {
+          throw new Error('Failed to fetch data');
+        }
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-    ]
-  };
+    };
 
-  const rehabMetricsData = {
-    labels: ['Flexibility', 'Strength', 'Endurance', 'Balance'],
-    datasets: [
-      {
-        label: 'Metrics',
-        data: [65, 59, 80, 81],
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1
-      }
-    ]
-  };
+    fetchData();
+  }, []);
 
+  // Prepare data for charts
   const calorieData = {
-    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-    datasets: [
-      {
-        label: 'Calories Consumed',
-        data: [2000, 2100, 1800, 2200, 2300, 1900, 2000],
-        borderColor: 'rgb(54, 162, 235)',
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        tension: 0.1,
-        fill: true
-      }
-    ]
-  };
-
-  const nutrientComplianceData = {
-    labels: ['Protein', 'Carbs', 'Fats', 'Fiber'],
-    datasets: [
-      {
-        label: 'Nutrient Compliance',
-        data: [75, 85, 60, 90],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)'
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)'
-        ],
-        borderWidth: 1
-      }
-    ]
+    labels: dietData?.weeklyCalories?.map(day => format(new Date(day.date), 'EEE')) || [],
+    datasets: [{
+      label: 'Daily Calories',
+      data: dietData?.weeklyCalories?.map(day => day.calories) || [],
+      fill: true,
+      borderColor: 'rgb(75, 192, 192)',
+      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      tension: 0.4
+    }]
   };
 
   const macroData = {
-    labels: ['Protein', 'Carbs', 'Fats'],
-    datasets: [
-      {
-        label: 'Macro Distribution',
-        data: [30, 50, 20],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)'
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)'
-        ],
-        borderWidth: 1
-      }
-    ]
+    labels: ['Protein', 'Carbs', 'Fat'],
+    datasets: [{
+      data: [
+        dietData?.macroSummary?.protein || 0,
+        dietData?.macroSummary?.carbs || 0,
+        dietData?.macroSummary?.fat || 0
+      ],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.8)',
+        'rgba(54, 162, 235, 0.8)',
+        'rgba(255, 206, 86, 0.8)'
+      ]
+    }]
+  };
+
+  const rehabProgressData = {
+    labels: rehabData?.exercises?.map(ex => ex.name) || [],
+    datasets: [{
+      label: 'Progress Score',
+      data: rehabData?.exercises?.map(ex => ex.progressScore) || [],
+      backgroundColor: 'rgba(153, 102, 255, 0.5)',
+      borderColor: 'rgb(153, 102, 255)',
+      borderWidth: 1
+    }]
+  };
+
+  const painLevelData = {
+    labels: rehabData?.painHistory?.map(entry => format(new Date(entry.date), 'MMM d')) || [],
+    datasets: [{
+      label: 'Pain Level',
+      data: rehabData?.painHistory?.map(entry => entry.level) || [],
+      borderColor: 'rgb(255, 99, 132)',
+      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      fill: true
+    }]
   };
 
   const chartOptions = {
@@ -125,139 +163,124 @@ export default function Analysis() {
       legend: {
         position: 'top',
         labels: {
-          color: 'rgba(255, 255, 255, 0.7)'
+          color: 'rgb(160, 174, 192)'
         }
       }
     },
     scales: {
       y: {
+        beginAtZero: true,
         grid: {
-          color: 'rgba(255, 255, 255, 0.1)'
+          color: 'rgba(160, 174, 192, 0.1)'
         },
         ticks: {
-          color: 'rgba(255, 255, 255, 0.7)'
+          color: 'rgb(160, 174, 192)'
         }
       },
       x: {
         grid: {
-          color: 'rgba(255, 255, 255, 0.1)'
+          color: 'rgba(160, 174, 192, 0.1)'
         },
         ticks: {
-          color: 'rgba(255, 255, 255, 0.7)'
+          color: 'rgb(160, 174, 192)'
         }
       }
     }
   };
 
-  const radarOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: 'top',
-        labels: {
-          color: 'rgba(255, 255, 255, 0.7)'
-        }
-      }
-    },
-    scales: {
-      r: {
-        grid: {
-          color: 'rgba(255, 255, 255, 0.1)'
-        },
-        angleLines: {
-          color: 'rgba(255, 255, 255, 0.1)'
-        },
-        ticks: {
-          color: 'rgba(255, 255, 255, 0.7)'
-        }
-      }
-    }
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+        <div className="text-red-600 dark:text-red-400">{error}</div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-black p-6">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white/80 dark:bg-black/30 backdrop-blur-md rounded-xl p-6 shadow-xl">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Analysis</h2>
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
+          Progress Analysis
+        </h1>
 
-          <div className="flex space-x-4 mb-6">
-            <button
-              onClick={() => setActiveTab('overview')}
-              className={`px-4 py-2 rounded-lg ${activeTab === 'overview' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white'}`}
-            >
-              Overview
-            </button>
-            <button
-              onClick={() => setActiveTab('nutrition')}
-              className={`px-4 py-2 rounded-lg ${activeTab === 'nutrition' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white'}`}
-            >
-              Nutrition
-            </button>
-            <button
-              onClick={() => setActiveTab('rehabilitation')}
-              className={`px-4 py-2 rounded-lg ${activeTab === 'rehabilitation' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white'}`}
-            >
-              Rehabilitation
-            </button>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Calorie Tracking */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+              Weekly Calorie Intake
+            </h2>
+            <div className="h-[300px]">
+              <Line data={calorieData} options={chartOptions} />
+            </div>
           </div>
 
-          {activeTab === 'overview' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-xl border dark:border-gray-700">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Rehabilitation Progress</h2>
-                <div className="h-[300px]">
-                  <Line data={rehabProgressData} options={chartOptions} />
-                </div>
-              </div>
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-xl border dark:border-gray-700">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Calorie Tracking</h2>
-                <div className="h-[300px]">
-                  <Bar data={calorieData} options={chartOptions} />
-                </div>
-              </div>
+          {/* Macro Distribution */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+              Macro Distribution
+            </h2>
+            <div className="h-[300px]">
+              <Doughnut data={macroData} options={chartOptions} />
             </div>
-          )}
+          </div>
 
-          {activeTab === 'rehabilitation' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-xl border dark:border-gray-700">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Rehabilitation Progress</h2>
-                <div className="h-[300px]">
-                  <Line data={rehabProgressData} options={chartOptions} />
-                </div>
-              </div>
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-xl border dark:border-gray-700">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Rehabilitation Metrics</h2>
-                <div className="h-[300px]">
-                  <Radar data={rehabMetricsData} options={radarOptions} />
-                </div>
-              </div>
+          {/* Rehabilitation Progress */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+              Exercise Progress
+            </h2>
+            <div className="h-[300px]">
+              <Bar data={rehabProgressData} options={chartOptions} />
             </div>
-          )}
+          </div>
 
-          {activeTab === 'nutrition' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-xl border dark:border-gray-700">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Calorie Tracking</h2>
-                <div className="h-[300px]">
-                  <Line data={calorieData} options={chartOptions} />
-                </div>
-              </div>
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-xl border dark:border-gray-700">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Nutrient Compliance</h2>
-                <div className="h-[300px]">
-                  <Radar data={nutrientComplianceData} options={radarOptions} />
-                </div>
-              </div>
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-xl border dark:border-gray-700">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Macro Distribution</h2>
-                <div className="h-[300px]">
-                  <Doughnut data={macroData} options={chartOptions} />
-                </div>
-              </div>
+          {/* Pain Level Tracking */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+              Pain Level History
+            </h2>
+            <div className="h-[300px]">
+              <Line data={painLevelData} options={chartOptions} />
             </div>
-          )}
+          </div>
+
+          {/* Summary Cards */}
+          <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                Average Daily Calories
+              </h3>
+              <p className="text-3xl font-bold text-primary-600">
+                {Math.round(dietData?.averageCalories || 0)}
+              </p>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                Rehabilitation Progress
+              </h3>
+              <p className="text-3xl font-bold text-primary-600">
+                {Math.round(rehabData?.overallProgress || 0)}%
+              </p>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                Current Pain Level
+              </h3>
+              <p className="text-3xl font-bold text-primary-600">
+                {rehabData?.currentPainLevel || 0}/10
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

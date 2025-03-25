@@ -5,7 +5,7 @@ import { PrismaClient } from '@prisma/client';
 import authRoutes from './routes/auth.js';
 import dietRoutes from './routes/diet.js';
 import supportRoutes from './routes/support.js';
-import rehabilitationRoutes from './routes/rehabilitation.js';
+import rehabilitationRouter from './routes/rehabilitation.js';
 import formCheckRoutes from './routes/formCheck.js';
 
 dotenv.config();
@@ -22,9 +22,9 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Debug middleware to log requests
+// Debug middleware to log all requests
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
+  console.log(`${req.method} ${req.path}`);
   next();
 });
 
@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 app.use('/auth', authRoutes);
 app.use('/diet', dietRoutes);
 app.use('/support', supportRoutes);
-app.use('/rehabilitation', rehabilitationRoutes);
+app.use('/rehabilitation', rehabilitationRouter);
 app.use('/form-check', formCheckRoutes);
 
 // Test route
@@ -88,8 +88,9 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-// 404 handler
+// Move the 404 handler to the end
 app.use((req, res) => {
+  console.log('404 for path:', req.path);
   res.status(404).json({ error: 'Route not found' });
 });
 
